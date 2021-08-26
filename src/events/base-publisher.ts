@@ -9,14 +9,13 @@ interface Event {
 export abstract class Publisher<T extends Event> {
   abstract subject: T["subject"];
   private client: Stan;
-  abstract onConnect(data: T["data"], msg: Message): void;
 
   constructor(client: Stan) {
     this.client = client;
   }
 
   publish(data: T["data"]) {
-    this.client.publish(this.subject, data, () => {
+    this.client.publish(this.subject, JSON.stringify(data), () => {
       console.log("Event published.");
     });
   }
